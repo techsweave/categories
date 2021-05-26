@@ -59,6 +59,7 @@ const serverlessConfiguration: AWS = {
         s3arn: 'arn:aws:sns:eu-central-1:780844780884:images',
         categoriesTable: 'categories-table',
         userPoolId: 'eu-central-1_eciEUvwzp',
+        cognitoArn: 'arn:aws:cognito-idp:eu-central-1:780844780884:userpool/eu-central-1_eciEUvwzp',
         dynamodb: {
             stages: ['dev'],
             start: {

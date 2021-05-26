@@ -13,7 +13,7 @@ const deleteCategoryHandler: ValidatedEventAPIGatewayProxyEvent<void> = async (e
     let res: Response<Category>;
     try {
 
-        const user: AuthenticatedUser = await AuthenticatedUser.fromToken(event.headers?.Authorization);
+        const user: AuthenticatedUser = await AuthenticatedUser.fromToken(event.headers?.AccessToken);
         if (!(await user.isVendor(process.env.USER_POOL_ID))) {
             throw {
                 name: 'userNotAllowed',
