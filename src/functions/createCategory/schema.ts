@@ -13,7 +13,7 @@ export default {
                     fieldName: { type: 'string' },
                     unitMisure: { type: 'string' }
                 },
-                required: ['fieldName', 'unitMisure', 'value']
+                required: ['fieldName', 'unitMisure']
             },
 
         }

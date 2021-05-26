@@ -1,8 +1,6 @@
 import dbContext from '@dbModel/dbContext';
 import Category from '@dbModel/tables/category';
 import { ScanOptions } from '@aws/dynamodb-data-mapper';
-import { objectToConditionExpression } from 'utilities-techsweave';
-
 
 const scanCategory = async (filter: any): Promise<{
     items: Category[],
@@ -12,10 +10,8 @@ const scanCategory = async (filter: any): Promise<{
     let lastKey: Partial<Category>;
     const dbFilter: ScanOptions = {
         limit: filter.limit,
-        indexName: filter.indexName,
         pageSize: filter.pageSize,
-        startKey: filter.startKey,
-        filter: await objectToConditionExpression(filter.filter)
+        startKey: filter.startKey
     };
 
     const paginator = dbContext.scan(Category, dbFilter).pages();
