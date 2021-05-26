@@ -88,27 +88,27 @@ const serverlessConfiguration: AWS = {
         'serverless-offline',
         'serverless-dynamodb-local'
     ],
-    resources: {
-        Resources: {
-            categoriesTable: {
-                Type: 'AWS::DynamoDB::Table',
-                Properties: {
-                    TableName: '${self:custom.categoriesTable}',
-                    AttributeDefinitions: [
-                        { AttributeName: 'id', AttributeType: 'S' }
-                    ],
-                    KeySchema: [
-                        { AttributeName: 'id', KeyType: 'HASH' }
-                    ],
-                    ProvisionedThroughput: {
-                        ReadCapacityUnits: '5',
-                        WriteCapacityUnits: '5'
-                    }
-                },
+    // resources: {
+    //     Resources: {
+    //         categoriesTable: {
+    //             Type: 'AWS::DynamoDB::Table',
+    //             Properties: {
+    //                 TableName: '${self:custom.categoriesTable}',
+    //                 AttributeDefinitions: [
+    //                     { AttributeName: 'id', AttributeType: 'S' }
+    //                 ],
+    //                 KeySchema: [
+    //                     { AttributeName: 'id', KeyType: 'HASH' }
+    //                 ],
+    //                 ProvisionedThroughput: {
+    //                     ReadCapacityUnits: '5',
+    //                     WriteCapacityUnits: '5'
+    //                 }
+    //             },
 
-            },
-        },
-    },
+    //         },
+    //     },
+    // },
     // import the function via paths
     functions: {
         createCategory,
