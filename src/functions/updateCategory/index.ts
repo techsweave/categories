@@ -7,7 +7,7 @@ export default {
         {
             http: {
                 method: 'put',
-                path: 'products/{id}',
+                path: 'categories/{id}',
                 cors: true
             }
         }
