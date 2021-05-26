@@ -1,20 +1,15 @@
 import type { AWS } from '@serverless/typescript';
 
 import {
-    getProduct,
-    getCart,
-    createProduct,
-    deleteProduct,
-    createCheckout,
-    scanProduct,
-    updateProduct,
-    addProductToCart,
-    removeProductFromCart,
-    editCart
+    createCategory,
+    deleteCategory,
+    getCategory,
+    scanCategory,
+    updateCategory
 } from '@functions/index';
 
 const serverlessConfiguration: AWS = {
-    service: 'eml-be',
+    service: 'products-service',
 
     frameworkVersion: '2',
 
@@ -34,9 +29,10 @@ const serverlessConfiguration: AWS = {
             AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
             REGION: '${self:provider.region}',
             STAGE: '${self:provider.stage}',
-            PRODUCTS_TABLE: '${self:custom.productsTable}',
-            CARTS_TABLE: '${self:custom.cartsTable}',
-            STRIPE_SECRET_KEY: '${self:custom.stripeSecretKey}'
+            QUEUE: '${self:custom.queue}',
+            S3ARN: '${self:custom.s3arn}',
+            CATEGORIES_TABLE: '${self:custom.categoriesTable}',
+            USER_POOL_ID: '{self:custom.userPoolId}'
         },
 
         iam: {
@@ -46,6 +42,8 @@ const serverlessConfiguration: AWS = {
                         Effect: 'Allow',
                         Action: [
                             'dynamodb:*',
+                            'sns:*',
+                            'sqs:*'
                         ],
                         Resource: ['*']
                     }
@@ -57,10 +55,10 @@ const serverlessConfiguration: AWS = {
     custom: {
         region: '${opt:region, self:provider.region}',
         stage: '${opt:stage, self:provider.stage}',
-        productsTable: 'products-table',
-        cartsTable: 'carts-table',
-        stripeSecretKey: 'sk_test_51Ij41SF20K2KHUILxXq9l5A2CbPS6VtYNmH4Ij0PPZyxatNDMTyovfiFjdYtOaQvbrDCokLPhorse1BxVPNXt1jW0032wODV69',
-        cognitoPoolID: 'eu-central-1_eciEUvwzp',
+        queue: 'https://sqs.eu-central-1.amazonaws.com/780844780884/messagesQueue',
+        s3arn: 'arn:aws:sns:eu-central-1:780844780884:images',
+        categoriesTable: 'categories-table',
+        userPoolId: 'eu-central-1_eciEUvwzp',
         dynamodb: {
             stages: ['dev'],
             start: {
@@ -75,34 +73,27 @@ const serverlessConfiguration: AWS = {
             migration: {
                 dir: 'offline/migrations',
             },
-            // customDomain: {
-            //     domainName: 'api.techSWEave.shop',
-            //     basePath: '${self:provider.stage}',
-            //     stage: '${self:provider.stage}',
-            //     createRoute53Record: true,
-            // }
         },
         webpack: {
             includeModules: true,
-        }
+        },
     },
-
-    plugins: [
-        'serverless-webpack',
-        'serverless-offline',
-        'serverless-dynamodb-local',
-    ],
 
     package: {
         individually: true,
     },
 
+    plugins: [
+        'serverless-webpack',
+        'serverless-offline',
+        'serverless-dynamodb-local'
+    ],
     resources: {
         Resources: {
-            productsTable: {
+            categoriesTable: {
                 Type: 'AWS::DynamoDB::Table',
                 Properties: {
-                    TableName: '${self:custom.productsTable}',
+                    TableName: '${self:custom.categoriesTable}',
                     AttributeDefinitions: [
                         { AttributeName: 'id', AttributeType: 'S' }
                     ],
@@ -116,58 +107,18 @@ const serverlessConfiguration: AWS = {
                 },
 
             },
-            cartsTable: {
-                Type: 'AWS::DynamoDB::Table',
-                Properties: {
-                    TableName: '${self:custom.cartsTable}',
-                    AttributeDefinitions: [
-                        { AttributeName: 'id', AttributeType: 'S' }
-                    ],
-                    KeySchema: [
-                        { AttributeName: 'id', KeyType: 'HASH' }
-                    ],
-                    ProvisionedThroughput: {
-                        ReadCapacityUnits: '5',
-                        WriteCapacityUnits: '5'
-                    }
-                }
-            },
-            //TODO
-            //An error occurred: ApiGatewayAuthorizer - Invalid API identifier specified 780844780884:eu-central-1_eciEUvwzp (Service: AmazonApiGateway; Status Code: 404; Error Code: NotFoundException; Request ID: 8f13cde5-8392-4ddc-889c-3da757643788; Proxy: null).
-            // ApiGatewayAuthorizer: {
-            //     Type: 'AWS::ApiGateway::Authorizer',
-            //     Properties: {
-            //         AuthorizerResultTtlInSeconds: 300,
-            //         IdentitySource: 'method.request.header.Authorization',
-            //         Name: 'Cognito',
-            //         RestApiId: 'eu-central-1_eciEUvwzp',
-            //         Type: 'COGNITO_USER_POOLS',
-            //         ProviderARNs: [
-            //             'arn:aws:cognito-idp:eu-central-1:780844780884:userpool/eu-central-1_eciEUvwzp',
-            //         ]
-            //     }
-            // }
         },
     },
     // import the function via paths
     functions: {
-        getProduct,
-        getCart,
-        createProduct,
-        deleteProduct,
-        addProductToCart,
-        createCheckout,
-        scanProduct,
-        updateProduct,
-        editCart,
-        removeProductFromCart
+        createCategory,
+        deleteCategory,
+        getCategory,
+        scanCategory,
+        updateCategory
     },
 };
 
 module.exports = serverlessConfiguration;
 
-
-//   USERPOOL:
-//     ID: 'eu-central-1_eciEUvwzp'
-// ARN: 'arn:aws:cognito-idp:eu-central-1:780844780884:userpool/eu-central-1_eciEUvwzp'
 
