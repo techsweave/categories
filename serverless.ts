@@ -9,7 +9,7 @@ import {
 } from '@functions/index';
 
 const serverlessConfiguration: AWS = {
-    service: 'products-service',
+    service: 'categories-service',
 
     frameworkVersion: '2',
 
