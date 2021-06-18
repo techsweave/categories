@@ -18,10 +18,10 @@ const scanCategoryHandler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = a
 
     try {
         const result = await scanCategory(event.body);
-        res = Response.fromMultipleData(result.items, StatusCodes.OK, result.lastKey);
+        res = await Response.fromMultipleData(result.items, StatusCodes.OK, result.lastKey);
 
     } catch (error) {
-        res = Response.fromError<Category>(error);
+        res = await Response.fromError<Category>(error);
     }
     return res.toAPIGatewayProxyResult();
 };

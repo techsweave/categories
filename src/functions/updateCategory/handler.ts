@@ -30,13 +30,13 @@ const updateCategoryHandler: ValidatedEventAPIGatewayProxyEvent<typeof schema> =
         category.macroCategorieId = event.body.macroCategorieId;
 
 
-        response = Response.fromData<Category>(
+        response = await Response.fromData<Category>(
             await updateCategory(category),
             StatusCodes.OK
         );
     }
     catch (error) {
-        response = Response.fromError<Category>(error);
+        response = await Response.fromError<Category>(error);
     }
     return response.toAPIGatewayProxyResult();
 };

@@ -21,12 +21,12 @@ const deleteCategoryHandler: ValidatedEventAPIGatewayProxyEvent<void> = async (e
             };
         }
 
-        res = Response.fromData<Category>(
+        res = await Response.fromData<Category>(
             await deleteCategory(event.pathParameters.id),
             StatusCodes.OK);
 
     } catch (error) {
-        res = Response.fromError<Category>(error);
+        res = await Response.fromError<Category>(error);
     }
     return res.toAPIGatewayProxyResult();
 };
