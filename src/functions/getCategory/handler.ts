@@ -12,12 +12,12 @@ import { StatusCodes } from 'http-status-codes';
 const getCategoryHandler: ValidatedEventAPIGatewayProxyEvent<void> = async (event) => {
     let response: Response<Category>;
     try {
-        response = Response.fromData<Category>(
+        response = await Response.fromData<Category>(
             await getCategory(event.pathParameters?.id),
             StatusCodes.OK);
     }
     catch (error) {
-        response = Response.fromError<Category>(error);
+        response = await Response.fromError<Category>(error);
     }
     return response.toAPIGatewayProxyResult();
 };

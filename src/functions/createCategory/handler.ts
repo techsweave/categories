@@ -29,12 +29,12 @@ const createCategoryHandler: ValidatedEventAPIGatewayProxyEvent<typeof schema> =
         category.description = event.body?.description;
         category.taxes = event.body?.taxes;
         category.customSpecTemplates = event.body?.customSpecsTemplate;
-        category.macroCategorieId = event.body.macroCategorieId;
+        category.macroCategorieId = event.body?.macroCategorieId;
 
-        res = Response.fromData<Category>(await createCategory(category), StatusCodes.CREATED);
+        res = await Response.fromData<Category>(await createCategory(category), StatusCodes.CREATED);
 
     } catch (error) {
-        res = Response.fromError<Category>(error);
+        res = await Response.fromError<Category>(error);
     }
     return res.toAPIGatewayProxyResult();
 };
