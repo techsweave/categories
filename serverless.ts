@@ -32,7 +32,7 @@ const serverlessConfiguration: AWS = {
             QUEUE: '${self:custom.queue}',
             S3ARN: '${self:custom.s3arn}',
             CATEGORIES_TABLE: '${self:custom.categoriesTable}',
-            USER_POOL_ID: '{self:custom.userPoolId}'
+            USER_POOL_ID: '${self:custom.userPoolId}'
         },
 
         iam: {
