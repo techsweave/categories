@@ -26,7 +26,7 @@ const updateCategoryHandler: ValidatedEventAPIGatewayProxyEvent<typeof schema> =
         category.name = event.body.name;
         category.description = event.body?.description;
         category.taxes = event.body?.taxes;
-        category.customSpecTemplates = event.body?.customSpecsTemplate;
+        category.customSpecTemplates = event.body?.customSpecTemplates;
         category.macroCategorieId = event.body.macroCategorieId;
 
 
