@@ -15,7 +15,7 @@ const createCategoryHandler: ValidatedEventAPIGatewayProxyEvent<typeof schema> =
 
     try {
 
-        const user: AuthenticatedUser = await AuthenticatedUser.fromToken(event.headers?.AccessToken);
+        const user: AuthenticatedUser = await AuthenticatedUser.fromToken(event.headers?.accesstoken);
         if (!(await user.isVendor(process.env.USER_POOL_ID))) {
             throw {
                 name: 'userNotAllowed',
