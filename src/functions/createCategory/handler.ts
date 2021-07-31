@@ -15,7 +15,7 @@ const createCategoryHandler: ValidatedEventAPIGatewayProxyEvent<typeof schema> =
 
     try {
 
-        const user: AuthenticatedUser = await AuthenticatedUser.fromToken(event.headers?.AccessToken);
+        const user: AuthenticatedUser = await AuthenticatedUser.fromToken(event.headers?.accesstoken);
         if (!(await user.isVendor(process.env.USER_POOL_ID))) {
             throw {
                 name: 'userNotAllowed',
@@ -28,7 +28,7 @@ const createCategoryHandler: ValidatedEventAPIGatewayProxyEvent<typeof schema> =
         category.name = event.body.name;
         category.description = event.body?.description;
         category.taxes = event.body?.taxes;
-        category.customSpecTemplates = event.body?.customSpecsTemplate;
+        category.customSpecTemplates = event.body?.customSpecTemplates;
         category.macroCategorieId = event.body?.macroCategorieId;
 
         res = await Response.fromData<Category>(await createCategory(category), StatusCodes.CREATED);

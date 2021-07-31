@@ -43,7 +43,8 @@ const serverlessConfiguration: AWS = {
                         Action: [
                             'dynamodb:*',
                             'sns:*',
-                            'sqs:*'
+                            'sqs:*',
+                            'cognito-idp:*'
                         ],
                         Resource: ['*']
                     }

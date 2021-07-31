@@ -5,7 +5,7 @@ export default {
         description: { type: 'string' },
         macroCategorieId: { type: 'string' },
         taxes: { type: 'number' },
-        customSpecsTemplate: {
+        customSpecTemplates: {
             type: 'array',
             items: {
                 type: 'object',

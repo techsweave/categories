@@ -13,7 +13,7 @@ import { StatusCodes } from 'http-status-codes';
 const updateCategoryHandler: ValidatedEventAPIGatewayProxyEvent<typeof schema> = async (event) => {
     let response: Response<Category>;
     try {
-        const user: AuthenticatedUser = await AuthenticatedUser.fromToken(event.headers?.AccessToken);
+        const user: AuthenticatedUser = await AuthenticatedUser.fromToken(event.headers?.accesstoken);
         if (!(await user.isVendor(process.env.USER_POOL_ID))) {
             throw {
                 name: 'userNotAllowed',
@@ -26,7 +26,7 @@ const updateCategoryHandler: ValidatedEventAPIGatewayProxyEvent<typeof schema> =
         category.name = event.body.name;
         category.description = event.body?.description;
         category.taxes = event.body?.taxes;
-        category.customSpecTemplates = event.body?.customSpecsTemplate;
+        category.customSpecTemplates = event.body?.customSpecTemplates;
         category.macroCategorieId = event.body.macroCategorieId;
 
 
